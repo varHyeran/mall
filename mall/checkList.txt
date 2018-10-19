@@ -5,4 +5,4 @@
 (C)AddMember.doGet -> (V)addMember.jsp 
 
 3. 회원가입 액션
-(C)AddMember.doPost -> (M)MemberDao.insertMember -> re.(C)getMemberList
+(C)AddMember.doPost -> (M)MemberDao.insertMember -> re.(C)login
