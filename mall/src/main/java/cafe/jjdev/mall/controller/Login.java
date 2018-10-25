@@ -1,6 +1,8 @@
 package cafe.jjdev.mall.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,30 +10,50 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import cafe.jjdev.mall.service.Member;
 import cafe.jjdev.mall.service.MemberDao;
 
 @WebServlet("/login")
 public class Login extends HttpServlet {
 	private MemberDao memberDao;
-	// ·Î±×ÀÎ Æû
+	// ë¡œê·¸ì¸ í¼
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getSession().getAttribute("loginMember") == null) {
-			request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
+			request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
 		} else {
-			System.out.println("·Î±×ÀÎ ÁßÀÔ´Ï´Ù...");
+			System.out.println("ë¡œê·¸ì¸ ì¤‘ì…ë‹ˆë‹¤...");
 			response.sendRedirect("/index");
 		}
 	}
-	// ·Î±×ÀÎ ¾×¼Ç
+	// ë¡œê·¸ì¸ ì•¡ì…˜
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// boolean MemberDao.login(Member) È£Ãâ
-		boolean isLogin = false;
-		if(isLogin) {
+		// boolean MemberDao.login(Member) í˜¸ì¶œ
+		String id = request.getParameter("loginId");
+		String pw = request.getParameter("loginPw");
+		System.out.println(id + "<-- id Login.java");
+		System.out.println(pw + "<-- pw Login.java");
+		
+		Member loginMember = new Member();
+		loginMember.setMemberId(id);
+		loginMember.setMemberPw(pw);
+		
+		MemberDao memberDao = new MemberDao();
+		try {
+			loginMember = memberDao.loginMember(loginMember);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		if(loginMember.isLogin()) {
 			HttpSession session = request.getSession();
-			session.setAttribute("loginMember", null);
-			response.sendRedirect("/index");
+			session.setAttribute("loginMember", loginMember);
+			response.sendRedirect(request.getContextPath() + "/index");
+			System.out.println("ë¡œê·¸ì¸ ì„±ê³µ");
 		} else {
-			response.sendRedirect("/login");
+			response.sendRedirect(request.getContextPath() + "/login");
+			System.out.println("ë¡œê·¸ì¸ ì‹¤íŒ¨");
 		}
 	}
 

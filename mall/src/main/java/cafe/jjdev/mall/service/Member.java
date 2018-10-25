@@ -5,6 +5,7 @@ public class Member {
 	private String memberId;
 	private String memberPw;
 	private int memberLevel;
+	private boolean isLogin;
 	
 	public int getMemberNo() {
 		return memberNo;
@@ -30,6 +31,10 @@ public class Member {
 	public void setMemberLevel(int memberLevel) {
 		this.memberLevel = memberLevel;
 	}
-	
-	
+	public boolean isLogin() {
+		return isLogin;
+	}
+	public void setLogin(boolean isLogin) {
+		this.isLogin = isLogin;
+	}
 }
