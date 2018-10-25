@@ -9,6 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class MemberDao {
+	public Member selectMember(String id) {
+		return null;
+	}
+	
 	public void insertMember(Member member) throws ClassNotFoundException, SQLException {
 		DriverDB driverDB = new DriverDB();
 		Connection connection = null;
